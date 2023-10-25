@@ -1,0 +1,7 @@
+.app {
+  display: inline-flex;
+  padding: 64px 79px 0px 80px;
+  justify-content: center;
+  align-items: center;
+  background: #FFF;
+}
