@@ -1,0 +1,42 @@
+.wrapper {
+ position: relative;
+}
+.iconLoad {
+  position: absolute;
+  top: 50px;
+  left: 150px;
+  margin: 0 auto;
+  display: none;
+  text-align: center;
+}
+.iconLoad.active {
+  display: block;
+  animation: 1.5s linear 0s normal none infinite running rot;
+}
+.wrapper.active::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background-color: rgba(188, 195, 208, 0.50);
+  z-index: 200;
+}
+
+@keyframes rot {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes rot {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,77 +1,36 @@
 import React, {FC} from 'react'
 import styles from './userList.module.css'
 import { UserCard } from '../UserCard/UserCard'
-import { UserListRow } from '../UserListRow/UserListRow'
+import { UserData } from '../../pages/Users'
+import { v4 as uuidv4 } from 'uuid';
 
-export interface UserData {
-  id: number,
-  name: string,
-  phone: string,
-  email: string,
-  recruitment: string,
-  post: string,
-  dept: string
+interface Props {
+  users: UserData[],
+  openPopup: () => void,
+  setCurrentUser: (user: UserData) => void
 }
-const users: UserData[] = [
-  {
-    id: 0,
-    name: 'Клара',
-    phone: '98945345354',
-    email: 'fsdfs@dsfdf.vcxv',
-    recruitment: '12.03.23',
-    post: 'manager',
-    dept: 'управление'
-  },
-  {
-    id: 1,
-    name: 'Клара',
-    phone: '98945345354',
-    email: 'fsdfs@dsfdf.vcxv',
-    recruitment: '12.03.23',
-    post: 'manager',
-    dept: 'управление'
-  },
-  {
-    id: 2,
-    name: 'Саня',
-    phone: '98945345354',
-    email: 'fsdfs@dsfdf.vcxv',
-    recruitment: '12.03.23',
-    post: 'manager',
-    dept: 'управление'
-  },
-  {
-    id: 3,
-    name: 'Клара',
-    phone: '98945345354',
-    email: 'fsdfs@dsfdf.vcxv',
-    recruitment: '12.03.23',
-    post: 'manager',
-    dept: 'управление'
-  },
-  {
-    id: 4,
-    name: 'Игорь',
-    phone: '98945345354',
-    email: 'fsdfs@dsfdf.vcxv',
-    recruitment: '12.03.23',
-    post: 'manager',
-    dept: 'управление'
-  },
-]
-export const UserList: FC = () => {
+export const UserList: FC<Props> = ({users, openPopup, setCurrentUser}) => {
   return (
-    <div className={styles.userList}>
+    <>
       {
-        <UserListRow>
-          {
-             users.map((userData) => {
-              return <UserCard userData={userData}/>
-            })
-          }
-        </UserListRow>
+        users.length > 0 ? (
+          <div className={styles.userList}>
+            {
+               users.map((userData) => {
+                return (
+                  <UserCard 
+                    userData={userData} 
+                    key={uuidv4()} 
+                    openPopup={openPopup} 
+                    setCurrentUser={setCurrentUser}
+                  />
+                )
+              })
+            }
+          </div>
+        ) : <>Пользователи не найдены</>
        
       }
-    </div>
+    </>
   )
 }
