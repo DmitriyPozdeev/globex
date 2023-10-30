@@ -4,20 +4,32 @@ import { UserData } from '../../pages/Users';
 import closeIcon from '../../assets/close.svg';
 
 interface Props {
-  user: UserData
+  user: UserData | never
   close: () => void,
   open: boolean
 }
 export const UserInfoPopup: FC<Props> = ({ close, open, user}) => {
-  const {name,phone,email,hire_date,position_name,department, address} = user;
+  const {
+    name,phone,email,hire_date,
+    position_name,department, address
+  } = user;
   return (
     <div 
       className={
-        open ? `${styles.popupOverlay} ${styles.active}` : styles.popupOverlay 
+        open ? 
+          `${styles.popupOverlay} ${styles.active}`: 
+            styles.popupOverlay 
       } 
       onClick={close}
     >
-      <div className={open ? `${styles.popup} ${styles.active}` : styles.popup} onClick={(e) => e.stopPropagation()}>
+      <div 
+        className={
+          open ? 
+            `${styles.popup} ${styles.active}` : 
+              styles.popup
+      } 
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className={styles.cardTitleWrapper}>
           <span className={styles.cardTitle}>{name}</span>
           <img 
@@ -97,8 +109,6 @@ export const UserInfoPopup: FC<Props> = ({ close, open, user}) => {
           </p>
         </div >
       </div>
-   
-       
-      </div>
+    </div>
   )
 }

@@ -5,7 +5,6 @@ import styles from './users.module.css';
 import { UserInfoPopup } from '../components/UserInfoPopup/UserInfoPopup';
 import userService from '../services/userService';
 import queryString from 'query-string';
-import useDebounce from '../hooks/useDebounce';
 import { Spin } from '../components/Spin/Spin';
 
 const parsed = queryString.parse(location.search);
@@ -24,55 +23,49 @@ export const Users: FC = () => {
   const [userList, setUserList] = useState<UserData[]>([]);
   const [currentUser, setCurrentUser] = useState<UserData>({});
   const [active, setActive] = useState(false);
-  const [searchValue, setSearchValue] = useState<string>(parsed['term'] as string);
   const [loadState, setLoadState] = useState<'pending' | 'done' | 'error'>('done');
-  console.log(loadState)
+
   const closePopup = () => {
-    setActive(false)
+    setActive(false);
   }
   const openPopup = () => {
-    setActive(true)
+    setActive(true);
   }
 
   const getUsers = async(userName: string = '') => { 
-    setLoadState('pending')
+    setLoadState('pending');
     try {
       const {data} = await userService.getUsers(userName)
       setUserList(data)
-      setLoadState('done')
+      setLoadState('done');
     } catch (err) {
-      setLoadState('error')
+      setLoadState('error');
     }
     
   }
   const pushHistory = (value: string) => {
     value.trim().length > 0 ?
     history.pushState(null, '',`?term=${value}`): 
-    history.pushState(null, '','/')
+    history.pushState(null, '','/');
   }
-  const debouncedSearch = useDebounce(getUsers, 500);
-  const debouncedHistory = useDebounce(pushHistory, 500)
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target
-    setSearchValue(value)
-    debouncedSearch(value)
-    debouncedHistory(value)
-  }
+
+  
   useEffect(() => {
     setLoadState('pending');
     try{
-      getUsers(parsed['term'] as string)
-      setLoadState('done')
+      getUsers(parsed['term'] as string);
+      setLoadState('done');
     } catch(err) {
-      setLoadState('error')
+      setLoadState('error');
     } 
   }, [])
   return (
     <div className={styles.wrapper}>
       <UserSearch 
-        value={searchValue} 
-        onChange={changeHandler}
+        getUserHandler={getUsers} 
+        pushHistory={pushHistory}
       />
+
       <Spin active={loadState === 'pending'}>
         {
           loadState !== 'error' ? (
@@ -83,9 +76,8 @@ export const Users: FC = () => {
             />
           ) : <>Ошибка...</>
         }
-        
       </Spin>
-      
+
       <UserInfoPopup 
         user={currentUser} 
         close={closePopup} 

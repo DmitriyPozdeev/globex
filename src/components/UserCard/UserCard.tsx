@@ -31,8 +31,6 @@ export const UserCard: FC<Props> = ({userData, openPopup, setCurrentUser}) => {
           </span>
         </div>
       </div>
-
-    
     </div>
   )
 }
